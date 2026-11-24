@@ -1,0 +1,19 @@
+{
+  "n_observations": 500,
+  "start_levels": [
+    0.8,
+    1.2,
+    100.0,
+    150.0
+  ],
+  "raw_level_sd_ratio_max_over_min": 187.50000000000003,
+  "rebased_max_spread_index_points": 2.842170943040401e-14,
+  "mean_annualised_30_observation_log_vol_pct": {
+    "start_0.8": 9.614471687107702,
+    "start_1.2": 9.614471687107715,
+    "start_100": 9.614471687107761,
+    "start_150": 9.614471687107718
+  },
+  "vol_max_spread_across_series_pp": 4.263256414560601e-13,
+  "vol_max_direct_vs_reciprocal_diff_pp": 2.0961010704922955e-13
+}

@@ -44,3 +44,26 @@ The ECB file is live and mutable. `download_data.py` reuses a local file by defa
 - European Central Bank, euro foreign exchange reference rates: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html
 - European Central Bank, monetary policy decisions of 5 June 2014 (negative deposit facility rate, effective 11 June 2014): https://www.ecb.europa.eu/press/pr/date/2014/html/pr140605_2.en.html
 - World Health Organization, opening remarks of 11 March 2020 characterising COVID-19 as a pandemic: https://www.who.int/director-general/speeches/detail/who-director-general-s-opening-remarks-at-the-media-briefing-on-covid-19---11-march-2020
+
+## Notes moved from the README
+
+Changes made in version 0.3 (my audit of the earlier version):
+
+- Windows are 30 observations (roughly six calendar weeks), not 30 days, because pandas `rolling(30)` counts rows. The conventional `sqrt(252)` annualisation is kept and documented as a convention.
+- The old chart labelled 12 July 2022 as EUR-USD parity. The plotted ECB rate was 1.0042 that day, 1.0001 on 22 August and 0.9927 on 23 August. The chart now marks 23 August, and only draws the marker when the plotted data are below 1 on that date.
+- Annotations were earlier described as "the events behind the shape". They are now context markers (Lehman, the ECB negative deposit-rate announcement of 5 June 2014, the WHO pandemic characterisation of 11 March 2020 and the 2022 parity crossing).
+- I added descriptive +/-20-observation event windows rebased to 100, and a common-date rebased-to-100 panel alongside the raw small multiples.
+- `src/data.py` rejects duplicate columns, a missing Date column, unparseable or duplicate dates, non-numeric rates, zero or negative rates and files with no currency columns. ECB dashes and empty cells count as missing and a trailing empty column is ignored.
+- Cached data are reused explicitly and the script says so. `--refresh` replaces the local file and writes a manifest with the source URL, UTC retrieval time and SHA-256. Chart titles use the last observation date, never the word "today".
+
+Known-truth unit-scale audit (`src/audit.py`, results in `reports/audit_summary.json`): 500 synthetic working-day observations, four series sharing one multiplicative path and starting at 0.80, 1.20, 100 and 150.
+
+| Check | Result |
+|---|---|
+| Raw level SD ratio, largest / smallest | 187.5x |
+| Max spread of paths rebased to 100 | 2.84e-14 index points |
+| Mean annualised 30-observation log volatility, every series | 9.6145% (all four agree to about 1e-13) |
+| Max volatility spread across series (per date) | 4.26e-13 percentage points |
+| Max direct-versus-reciprocal volatility difference | 2.10e-13 percentage points |
+
+The residuals are floating-point noise.
